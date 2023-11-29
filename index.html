@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!-- Google tag (gtag.js) -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9SB0YPDRC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-N9SB0YPDRC');
+  </script> -->
+
+  <meta charset="utf-8">
+  <meta name="description"
+        content="DNO: Optimizing Diffusion Noise Can Serve As Universal Motion Priors">
+  <meta name="keywords" content="DNO, diffusion noise optimization, diffusion latent space, human motion, motion synthesis">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DNO: Optimizing Diffusion Noise Can Serve As Universal Motion Priors</title>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="shortcut icon" href="favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="publication-header">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Optimizing Diffusion Noise Can Serve As Universal Motion Priors</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://korrawe.github.io/">Korrawe Karunratanakul</a><sup>1</sup>,</span> 
+            <span class="author-block">
+              <a href="https://konpat.me/">Konpat Preechakul</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a href="https://emreaksan.github.io/">Emre Aksan</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://thabobeeler.com/">Thabo Beeler</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://www.supasorn.com/">Supasorn Suwajanakorn</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://vlg.inf.ethz.ch/team/Prof-Dr-Siyu-Tang.html">Siyu Tang</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Department of Computer Science, ETH Zurich </span> <br>
+            <span class="author-block"><sup>2</sup>VISTEC, Thailand</span> <br>
+            <span class="author-block"><sup>3</sup>Google</span>
+            <!-- <span class="author-block"><sup>1</sup>ETH Zurich</span> -->
+          </div>
+
+          <!-- <h3 class="is-5 conference">ICCV 2023</h3> -->
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="https://arxiv.org/abs/2212."
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2305.12577"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv (coming soon)</span>
+                </a>
+              </span>
+              <!-- Video Link. --> 
+              <span class="link-block">
+                <a href="https://youtu.be/heWXQdIjSzs" 
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/korrawe/guided-motion-diffusion"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span> -->
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="https://github.com/1"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/teaser.jpg"
+                 class="column is-centered has-text-centered"
+                 alt="Teaser image."/>
+
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video> -->
+      <h2 class="subtitle has-text-centered">
+        <b> Diffusion Noise Optimization (DNO) </b> can leverage the existing human motion diffusion models as universal
+        motion priors. We demonstrate its capability in the motion editing tasks where DNO can preserve the content of the original model and
+        accommodates a diverse range of editing modes, including changing trajectory, pose, joint location, and avoiding newly added obstacles.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We propose Diffusion Noise Optimization (DNO), a new method that effectively leverages existing motion diffusion models as motion priors for a wide range of motion-related tasks.
+          </p>
+          <p>
+            Instead of training a task-specific diffusion model for each new task, DNO operates by optimizing the diffusion latent noise of an existing pre-trained text-to-motion model.
+            Given the corresponding latent noise of a human motion, it propagates the gradient from the target criteria defined on the motion space through the whole denoising process to update the diffusion latent noise. As a result, DNO supports any use cases where criteria can be defined as a function of motion. 
+          </p>
+          <p>
+            In particular, we show that, for motion editing and control, DNO outperforms existing methods in both achieving the objective and preserving the motion content. 
+            DNO accommodates a diverse range of editing modes, including changing trajectory, pose, joint locations, or avoiding newly added obstacles.
+          </p>
+          <p>
+            In addition, DNO is effective in motion denoising and completion, producing smooth and realistic motion from noisy and partial inputs.
+            DNO achieves these results at inference time without the need for model retraining, offering great versatility for any defined reward or loss function on the motion representation.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/heWXQdIjSzs?si=QDc62aFZW8uLj-e3"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+<!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/heWXQdIjSzs?si=QDc62aFZW8uLj-e3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Summary -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Summary</h2>
+        <div class="content has-text-justified">
+          <h4>Problems</h4>
+          <ul>
+            <li>To make the synthesized motions useful</li>
+          </ul>
+          <figure  class="content has-text-centered">
+            <img src="./static/images/guidance_problem.jpg"
+                   class="column is-7 is-offset-1 has-text-centered"
+                   alt="Guidance problem."
+                   />
+          </figure >
+          <h4>Our Solutions</h4>
+          <ul>
+            <li><b>Emphasis projection</b> allows us to manipulate feature importance <it>before training</it>. We give more emphasis to the global locations which are underrepresented in the motion vectors, making it harder for the model to ignore them.</li>
+          </ul>
+          <figure  class="content has-text-centered">
+            <img src="./static/images/method_overview.jpg"
+                   class="column is-8 is-offset-1 has-text-centered"
+                   alt="Guidance problem."
+                   />
+          </figure >
+          </p>
+        </div>
+        
+      </div>
+    </div> -->
+
+    <!-- Pipeline -->
+    <div class="columns is-centered has-text-centered">
+      <!-- <div class="column is-full-width">
+        <h2 class="title is-3">Our Pipeline</h2>
+        <div class="content has-text-justified">
+          <p>
+            In GMD, we tackle the problem of spatially conditioned motion generation using a two-staged pipeline (a) The optional first stage generates a trajectory given spatial conditioning. Then, the second stage synthesizes motions accroding to the trajectory. Our main contributions are (b) <b>Emphasis projection</b>, for better trajectory-motion coherence, and (c) <b>Dense signal propagation</b>, for a more controllable generation even under sparse guidance signal.
+          </p>
+        </div>
+        <figure  class="content has-text-centered">
+          <img src="./static/images/pipeline.jpg"
+                 class="column is-8 is-offset-2 has-text-centered"
+                 alt="Method pipeline."
+                 />
+        </figure > -->
+        
+        <!-- Emphasis projection -->
+        <!-- <h3 class="title is-4 has-text-left">Emphasis projection</h3>
+        <div class="content has-text-justified">
+          <p>
+            The most straightforward way of forcing the model to put more importance on the trajectory is to simply scale up its loss weight compared to other parts during training. Nevertheless, we found that loss manipulation is ineffective in this setting and also makes the training less stable.
+            To achieve the same effect, we can scale up the value of the trajectory in the motion representation (multiply the values by c). But, doing so means the variance of each value in the motion vector will not be the same, which most diffusion models assume to be the case.
+            The emphasis projection is then the next most straightforward solution for adjusting trajectory importance while taking these problems into account. It can be described as follows:
+            <ol>
+            <li>Scale up the trajectory values by a factor c.</li>
+            <li>Randomly project the motion vector into a new vector using a fixed random matrix. Do the same for every frame.</li>
+            <li>Normalize the new motion vector such that it has a unit variance again.</li>
+            </ol>
+            The final vectors are used as motion representation instead of the original representation.</li>
+          </p>
+        </div> -->
+        <!--/ Emphasis projection -->
+
+        <!-- Dense signal propagation -->
+        <!-- <h3 class="title is-4 has-text-left">Dense signal propagation</h3>
+        <div class="content has-text-justified">
+          <p>
+            Our goal is to convert the sparse guidance signals that are defined on some keyframes to denser signals during denoising.
+            As the spatial guidance can only be defined on the clean motion (X<sub>0</sub>) but we need gradients w.r.t. the noisy motion (X<sub>t</sub>) to guide the motion at the denoising step t, we observe that
+            <ol>
+              <li>We need a function that can propagate gradients that are defined on some frames of X<sub>0</sub> to their surrounding frames but with respect to X<sub>t</sub> (not X<sub>0</sub> !)</li>
+              <li>By definition, any denoising function (f: x<sub>noisy</sub> → x<sub>clean</sub>) that produces a clean motion from noisy motion has this dense gradient propagation property because it needs to look at the context to refine any given frame (let x<sub>noisy</sub>=x<sub>t</sub> and x<sub>clean</sub>=x<sub>0</sub>).</li>
+              <li>This coincides with the definition of the diffusion model x<sub>0,θ</sub> which predicts the clean motion X<sub>0</sub> from the noisy motion X<sub>t</sub>. </li>
+            </ol>
+            As such, we can use the diffusion model itself to efficiently compute the gradients. In practice, this translates to using autodiff to compute the guidance gradients w.r.t. the input of the diffusion model.
+          </p>
+        </div>
+        <figure  class="content has-text-centered">
+          <img src="./static/images/dense_signal.jpg"
+                 class="column is-6 is-offset-4 has-text-centered"
+                 alt="Guidance problem."
+                 />
+        </figure > -->
+        <!-- <h4 class="subtitle has-text-centered"> -->
+        <!-- <p>
+          <b>Generated motion trajectories</b>, conditioned on target locations at given keyframes. Without dense signal propagation, the model ignores the target conditions
+        </p> -->
+          <!-- </h4> -->
+        <!--/ Dense signal propagation -->
+      </div>
+    </div>
+    
+    <!-- <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Hand Avatar</h2>
+
+        <h3 class="title is-4">Robustness</h3>
+        <div class="content has-text-justified">
+          <p>
+            Given a short video, HARP can create an avatar from different capturing scenarios.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <img src="./static/images/other_dataset.jpg"
+                 class="column is-centered has-text-centered"
+                 alt="results in different dataset."/>
+        </div>
+        <br/>
+
+        <h3 class="title is-4">Out-of-distribution appearance</h3>
+        <div class="content has-text-justified">
+          <p>
+            HARP works without modification for out-of-distribution appearance that cannot be captured by parametric models.
+          </p>
+        </div>
+        <div class="content has-text-centered">
+          <img src="./static/images/tattoo_single.jpg"
+                 class="column is-centered has-text-centered"
+                 alt="Out-of-distribution result."/>
+        </div>
+
+
+      </div>
+    </div> -->
+
+
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{karunratanakul2023dno,
+  title={Optimizing Diffusion Noise Can Serve As Universal Motion Priors},
+  author={Karunratanakul, Korrawe and Preechakul, Konpat and Aksan, Emre and Beeler, Thabo and Suwajanakorn, Supasorn and Tang, Siyu},
+  booktitle={arxiv},
+  year={2023}
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            We use the website template provided by <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

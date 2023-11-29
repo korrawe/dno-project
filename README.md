@@ -1,13 +1,13 @@
 # GMD
 
-This is the repository that contains source code for the [GMD website](https://korrawe.github.io/gmd-page/).
+This is the repository that contains source code for the [DNO website](https://korrawe.github.io/dno-page/).
 
-If you find GMD useful for your work please cite:
+If you find DNO useful for your work please cite:
 ```
-@article{karunratanakul2023gmd,
-  author    = {Karunratanakul, Korrawe and Preechakul, Konpat and Suwajanakorn, Supasorn and Tang, Siyu},
-  title     = {GMD: Controllable Human Motion Synthesis via Guided Diffusion Models},
-  journal   = {arXiv preprint arXiv:2305.12577},
+@article{karunratanakul2023dno,
+  author    = {Karunratanakul, Korrawe and Preechakul, Konpat and Aksan, Emre and Beeler, Thabo and Suwajanakorn, Supasorn and Tang, Siyu},
+  title     = {Optimizing Diffusion Noise Can Serve As Universal Motion Priors},
+  journal   = {arXiv preprint arXiv:},
   year      = {2023},
 }
 ```

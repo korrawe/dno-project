@@ -95,6 +95,7 @@
             <span class="author-block">
               <a href="https://emreaksan.github.io/">Emre Aksan</a><sup>4</sup>,
             </span>
+            <br>
             <span class="author-block">
               <a href="https://thabobeeler.com/">Thabo Beeler</a><sup>4</sup>,
             </span>
@@ -148,15 +149,15 @@
                 </a>
               </span>
               <!-- Code Link. -->
-              <!-- <span class="link-block">
-                <a href="https://github.com/korrawe/guided-motion-diffusion"
+              <span class="link-block">
+                <a href="https://github.com/korrawe/Diffusion-Noise-Optimization"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
-                  <span>Code</span>
+                  <span>Code (To be released)</span>
                   </a>
-              </span> -->
+              </span>
               <!-- Dataset Link. -->
               <!-- <span class="link-block">
                 <a href="https://github.com/1"
@@ -197,8 +198,10 @@
 
 
 
-<section class="section">
+<!-- <section class="section"> -->
+<section class="hero is-light is-small">
   <div class="container is-max-desktop">
+    <br>
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
@@ -236,6 +239,7 @@
     </div>
     <!--/ Paper video. -->
   </div>
+  <br/>
 </section>
 <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/heWXQdIjSzs?si=QDc62aFZW8uLj-e3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
 
@@ -243,97 +247,59 @@
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Summary -->
-    <!-- <div class="columns is-centered has-text-centered">
+    <div class="columns is-centered has-text-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Summary</h2>
         <div class="content has-text-justified">
-          <h4>Problems</h4>
-          <ul>
-            <li>To make the synthesized motions useful</li>
-          </ul>
-          <figure  class="content has-text-centered">
+          <h4>Key Ideas</h4>
+          We show that the diffusion latent noise (x<sub>T</sub>) can be optimized using critertion function defined on the motion space (x<sub>0</sub>) to serve as universal motion priors for a wide range of motion-related tasks.
+
+          <!-- <figure  class="content has-text-centered">
             <img src="./static/images/guidance_problem.jpg"
                    class="column is-7 is-offset-1 has-text-centered"
                    alt="Guidance problem."
                    />
-          </figure >
-          <h4>Our Solutions</h4>
-          <ul>
-            <li><b>Emphasis projection</b> allows us to manipulate feature importance <it>before training</it>. We give more emphasis to the global locations which are underrepresented in the motion vectors, making it harder for the model to ignore them.</li>
-          </ul>
+          </figure > -->
+          <p>
+          <h4>Casual Summary</h4>
+          <p>
+            Many papers show that in VAE or GAN, we can optimize the latent noise according to a loss in the output space to obtain a prediction that satisfies certain properties.
+
+            Then, what about the (supposedly) richer generative space of the diffusion model? Can we optimize it the same way we do with VAE or GAN?
+          </p>
+
+          <p>
+            In this paper, we show we can <b>also change the output motion by optimizing the latent diffusion noise</b>. This latent noise is very versatile as a motion prior.
+          </p>
+
+          <b>How?</b> We unroll the ODE chain to produce the output motion, compute loss, and backpropagate the gradient through the full denoising chain to the latent noise x<sub>T</sub>.
+          We demonstrate that this process is feasible.  In addition, we do not need that many ODE steps for the optimization in the motion domain, which we can still hold in the GPU memory.
+          <br>
+
+          This enables us to use a pre-trained motion diffusion model to handle many arbitrary motion tasks, including motion editing, in-betweening, denoising, and avoiding obstacles, by only changing the objective function during test time optimization. The model is never trained to solve any of these tasks.
+
           <figure  class="content has-text-centered">
-            <img src="./static/images/method_overview.jpg"
-                   class="column is-8 is-offset-1 has-text-centered"
-                   alt="Guidance problem."
+            <img src="./static/images/overview.jpg"
+                   class="column is-10 is-offset-0 has-text-centered"
+                   alt="Method Overview."
+                   />
+          </figure >
+          <figure  class="content has-text-centered">
+            <img src="./static/images/DNO_pipeline.jpg"
+                   class="column is-6 is-offset-0 has-text-centered"
+                   alt="DNO pipeline Overview."
                    />
           </figure >
           </p>
         </div>
         
       </div>
-    </div> -->
-
-    <!-- Pipeline -->
-    <div class="columns is-centered has-text-centered">
-      <!-- <div class="column is-full-width">
-        <h2 class="title is-3">Our Pipeline</h2>
-        <div class="content has-text-justified">
-          <p>
-            In GMD, we tackle the problem of spatially conditioned motion generation using a two-staged pipeline (a) The optional first stage generates a trajectory given spatial conditioning. Then, the second stage synthesizes motions accroding to the trajectory. Our main contributions are (b) <b>Emphasis projection</b>, for better trajectory-motion coherence, and (c) <b>Dense signal propagation</b>, for a more controllable generation even under sparse guidance signal.
-          </p>
-        </div>
-        <figure  class="content has-text-centered">
-          <img src="./static/images/pipeline.jpg"
-                 class="column is-8 is-offset-2 has-text-centered"
-                 alt="Method pipeline."
-                 />
-        </figure > -->
-        
-        <!-- Emphasis projection -->
-        <!-- <h3 class="title is-4 has-text-left">Emphasis projection</h3>
-        <div class="content has-text-justified">
-          <p>
-            The most straightforward way of forcing the model to put more importance on the trajectory is to simply scale up its loss weight compared to other parts during training. Nevertheless, we found that loss manipulation is ineffective in this setting and also makes the training less stable.
-            To achieve the same effect, we can scale up the value of the trajectory in the motion representation (multiply the values by c). But, doing so means the variance of each value in the motion vector will not be the same, which most diffusion models assume to be the case.
-            The emphasis projection is then the next most straightforward solution for adjusting trajectory importance while taking these problems into account. It can be described as follows:
-            <ol>
-            <li>Scale up the trajectory values by a factor c.</li>
-            <li>Randomly project the motion vector into a new vector using a fixed random matrix. Do the same for every frame.</li>
-            <li>Normalize the new motion vector such that it has a unit variance again.</li>
-            </ol>
-            The final vectors are used as motion representation instead of the original representation.</li>
-          </p>
-        </div> -->
-        <!--/ Emphasis projection -->
-
-        <!-- Dense signal propagation -->
-        <!-- <h3 class="title is-4 has-text-left">Dense signal propagation</h3>
-        <div class="content has-text-justified">
-          <p>
-            Our goal is to convert the sparse guidance signals that are defined on some keyframes to denser signals during denoising.
-            As the spatial guidance can only be defined on the clean motion (X<sub>0</sub>) but we need gradients w.r.t. the noisy motion (X<sub>t</sub>) to guide the motion at the denoising step t, we observe that
-            <ol>
-              <li>We need a function that can propagate gradients that are defined on some frames of X<sub>0</sub> to their surrounding frames but with respect to X<sub>t</sub> (not X<sub>0</sub> !)</li>
-              <li>By definition, any denoising function (f: x<sub>noisy</sub> → x<sub>clean</sub>) that produces a clean motion from noisy motion has this dense gradient propagation property because it needs to look at the context to refine any given frame (let x<sub>noisy</sub>=x<sub>t</sub> and x<sub>clean</sub>=x<sub>0</sub>).</li>
-              <li>This coincides with the definition of the diffusion model x<sub>0,θ</sub> which predicts the clean motion X<sub>0</sub> from the noisy motion X<sub>t</sub>. </li>
-            </ol>
-            As such, we can use the diffusion model itself to efficiently compute the gradients. In practice, this translates to using autodiff to compute the guidance gradients w.r.t. the input of the diffusion model.
-          </p>
-        </div>
-        <figure  class="content has-text-centered">
-          <img src="./static/images/dense_signal.jpg"
-                 class="column is-6 is-offset-4 has-text-centered"
-                 alt="Guidance problem."
-                 />
-        </figure > -->
-        <!-- <h4 class="subtitle has-text-centered"> -->
-        <!-- <p>
-          <b>Generated motion trajectories</b>, conditioned on target locations at given keyframes. Without dense signal propagation, the model ignores the target conditions
-        </p> -->
-          <!-- </h4> -->
-        <!--/ Dense signal propagation -->
-      </div>
     </div>
+
+    <!-- Pipeline
+    <div class="columns is-centered has-text-centered">
+      
+    </div> -->
     
     <!-- <div class="columns is-centered">
       <div class="column is-full-width">
@@ -371,6 +337,265 @@
 
 
   </div>
+</section>
+
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <br>
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-3">Results</h2>
+      <br>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-4">DNO does not require any training <span style="color:#6C91C2";><b>(zero-shot)</b></span> <br> 
+        and works with <span style="color:#6C91C2";><b>any</b></span> motion task by changing the criterion function.</h2>
+    </div>    
+    <br>
+    <br>
+
+    <!-- Motion Editing -->
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-4">Motion Editing</h2>
+      <br>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <h4 class="subtitle is-4">With DNO, we can edit the <span style="color:#5d88bc";>original motions</span> to produce <span style="color:#d6960b";>output motions</span> <br> that satisfy given objectives while keeping the original content intact.</h4>
+    </div>
+
+    <div class="content has-text-centered">
+      <video id="replay-video"
+              autoplay  
+              controls
+              muted
+              preload
+              loop
+              playsinline
+              width="1000">
+              <!-- height="100%"> -->
+        <source src="./static/videos/edit_jump.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+
+    <div class="content has-text-centered">
+      <video id="replay-video"
+              autoplay  
+              controls
+              muted
+              preload
+              loop
+              playsinline
+              width="896">
+              <!-- height="100%"> -->
+        <source src="./static/videos/edit_render.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+
+    <!-- carousel -->
+    <!-- <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item 4602">
+          <video poster="" id="pelvis" autoplay controls muted loop height="100%">
+            <source src="./static/videos/inbetween_sit.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item 559">
+          <video poster="" id="pelvis1" autoplay controls muted loop height="100%">
+            <source src="./static/videos/inbetween_sit.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item 277">
+          <video poster="" id="pelvis2" autoplay controls muted loop height="100%">
+            <source src="./static/videos/inbetween_sit.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item 100">
+          <video poster="" id="pelvis3" autoplay controls muted loop height="100%">
+            <source src="./static/videos/inbetween_sit.mp4"
+                    type="video/mp4">
+        </video>
+        </div>
+      </div>
+    </div>
+    <br> -->
+
+    <!-- Side by side -->
+    <!-- <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content">
+            <video id="inbetween_sit" autoplay controls muted loop height="100%" width="448">
+              <source src="./static/videos/inbetween_sit.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="column">
+          <div class="columns is-centered">
+            <div class="column content">
+              <video id="inbetween_walk" autoplay controls muted loop height="100%" width="448">
+                <source src="./static/videos/inbetween_walk.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <br> -->
+    <br>
+    <!-- Motion Editing -->
+
+    <!-- Motion In-betweening -->
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-4">Motion In-betweening</h2>
+    </div>
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content">
+            <!-- <h2 class="title is-3">Header1</h2> -->
+            <video id="inbetween_sit" autoplay controls muted loop height="100%" width="448">
+              <source src="./static/videos/inbetween_sit.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="column">
+          <!-- <h2 class="title is-3">Header2</h2> -->
+          <div class="columns is-centered">
+            <div class="column content">
+              <video id="inbetween_walk" autoplay controls muted loop height="100%" width="448">
+                <source src="./static/videos/inbetween_walk.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <!-- Motion In-betweening -->
+
+    <!-- Motion Denoising -->
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-4">Motion Denoising</h2>
+    </div>
+
+    <!-- carousel -->
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item 100">
+          <video poster="" id="pelvis3" autoplay controls muted loop height="100%">
+            <source src="./static/videos/refine_8.mp4"
+                    type="video/mp4">
+        </video>
+        </div>
+        <div class="item 4602">
+          <video poster="" id="pelvis" autoplay controls muted loop height="100%">
+            <source src="./static/videos/refine_10.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item 559">
+          <video poster="" id="pelvis1" autoplay controls muted loop height="100%">
+            <source src="./static/videos/refine_11.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item 277">
+          <video poster="" id="pelvis2" autoplay controls muted loop height="100%">
+            <source src="./static/videos/refine_13.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+        <div class="item 100">
+          <video poster="" id="pelvis3" autoplay controls muted loop height="100%">
+            <source src="./static/videos/refine_6.mp4"
+                    type="video/mp4">
+        </video>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column">
+          <div class="content"> -->
+            <!--  <h2 class="title is-3">Header1</h2> -->
+            <!-- <video id="inbetween_sit" autoplay controls muted loop height="100%" width="448">
+              <source src="./static/videos/refine_10.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="column"> -->
+          <!-- <h2 class="title is-3">Header2</h2> -->
+          <!-- <div class="columns is-centered">
+            <div class="column content">
+              <video id="inbetween_walk" autoplay controls muted loop height="100%" width="448">
+                <source src="./static/videos/refine_11.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <br> -->
+    <br>
+    <!-- Motion Motion Denoising -->
+
+    <!-- Motion Blending -->
+    <div class="columns is-centered has-text-centered">
+      <h2 class="title is-4">Motion Blending</h2>
+      <br>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <h4 class="subtitle is-4">DNO can blend two motions (<span style="color:#5d88bc";>blue</span> and <span style="color:#3e7929";>green</span>) to produce motion with <span style="color:#d6960b";>smooth transition</span> between them.</h4>
+    </div>
+
+
+    <div class="container is-max-desktop">
+      <!-- <div class="columns is-centered"> -->
+        <!-- <div class="column"> -->
+          <div class="content">
+            <!-- <h2 class="title is-3">Header1</h2> -->
+            <video id="inbetween_sit" autoplay controls muted loop height="100%" height="448">
+              <source src="./static/videos/blend_1_combine.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        <!-- </div> -->
+        <!-- <div class="column"> -->
+          <!-- <h2 class="title is-3">Header2</h2> -->
+          <!-- <div class="columns is-centered"> -->
+            <!-- <div class="column content"> -->
+            <div class="content has-text-centered">
+              <video id="inbetween_walk" autoplay controls muted loop height="100%" height="448">
+                <source src="./static/videos/blend_jump_jack_combine.mp4"
+                        type="video/mp4">
+              </video>
+            </div>
+
+          <!-- </div> -->
+        <!-- </div> -->
+      <!-- </div> -->
+    </div>
+    <!-- Motion Blending -->
+
+    </div>
+  </div>
+  <br>
 </section>
 
 

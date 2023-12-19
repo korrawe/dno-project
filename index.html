@@ -360,8 +360,15 @@
       <br>
     </div>
     <div class="columns is-centered has-text-centered">
-      <h4 class="subtitle is-4">With DNO, we can edit the <span style="color:#5d88bc";>original motions</span> to produce <span style="color:#d6960b";>output motions</span> <br> that satisfy given objectives while keeping the original content intact.</h4>
+      <h4 class="subtitle is-4">With DNO, we can edit the <span style="color:#5d88bc";>original motions (blue)</span> to produce <span style="color:#d6960b";>output motions (orange)</span> <br> that satisfy various editing objectives.</h4>
     </div>
+
+    <br>
+    <!-- <div class="columns is-centered has-text-centered"> -->
+    <p class="subtitle has-text-centered is-offset-4"><b>Objective: change pelvis location.</b> We randomly change the pelvis location on the ground to a random location (represented by the <span style="color:#5d88bc">blue lines</span>, edited from <span style="color:#5d88bc";>blue dot</span> to <span style="color:#d6960b";>orange dot</span>).
+        The <span style="color:#d6960b";>output motions (orange)</span> can satisfy the editing while preserving the content and quality of the motion.
+    </p>
+    <!-- </div> -->
 
     <div class="content has-text-centered">
       <video id="replay-video"
@@ -373,11 +380,15 @@
               playsinline
               width="1000">
               <!-- height="100%"> -->
-        <source src="./static/videos/edit_jump.mp4"
+        <source src="./static/videos/edit_jump_all.mp4"
                 type="video/mp4">
       </video>
     </div>
-
+    
+    <p class="subtitle has-text-centered is-offset-4"><b>Objective: avoid newly added obstacles.</b> Obstacles, represented by the <span style="color:#ce1d1d";>red ball</span>, are added. DNO can edits the original motion to avoid obstacles.
+      <!-- , while preserving the content and quality of the motion. -->
+    </p>
+    
     <div class="content has-text-centered">
       <video id="replay-video"
               autoplay  
@@ -388,7 +399,26 @@
               playsinline
               width="896">
               <!-- height="100%"> -->
-        <source src="./static/videos/edit_render.mp4"
+        <source src="./static/videos/edit_obstacles.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+
+    <p class="subtitle has-text-centered is-offset-4"><b>Objective: multiple edits.</b> DNO accepts multiple edits at once.
+      <!-- , while preserving the content and quality of the motion. -->
+    </p>
+    
+    <div class="content has-text-centered">
+      <video id="replay-video"
+              autoplay  
+              controls
+              muted
+              preload
+              loop
+              playsinline
+              width="896">
+              <!-- height="100%"> -->
+        <source src="./static/videos/edit_joints.mp4"
                 type="video/mp4">
       </video>
     </div>
@@ -450,11 +480,15 @@
     </div>
     <br> -->
     <br>
+    <br>
     <!-- Motion Editing -->
 
     <!-- Motion In-betweening -->
     <div class="columns is-centered has-text-centered">
       <h2 class="title is-4">Motion In-betweening</h2>
+    </div>
+    <div class="is-centered has-text-centered">
+      <h5 class="subtitle is-4">DNO can infill the motion given a <span style="color:#ce1d1d";>starting pose (red)</span> and an <span style="color:#1a6d04";>ending pose (green)</span>.</h5>
     </div>
     <div class="container is-max-desktop">
       <div class="columns is-centered">
@@ -481,6 +515,7 @@
         </div>
       </div>
     </div>
+    <br>
     <br>
     <br>
     <!-- Motion In-betweening -->

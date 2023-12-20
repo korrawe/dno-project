@@ -272,12 +272,18 @@
             In this paper, we show we can <b>also change the output motion by optimizing the latent diffusion noise</b>. This latent noise is very versatile as a motion prior.
           </p>
 
+          <p>
           <b>How?</b> We unroll the ODE chain to produce the output motion, compute loss, and backpropagate the gradient through the full denoising chain to the latent noise x<sub>T</sub>.
           We demonstrate that this process is feasible.  In addition, we do not need that many ODE steps for the optimization in the motion domain, which we can still hold in the GPU memory.
           <br>
-
+          
           This enables us to use a pre-trained motion diffusion model to handle many arbitrary motion tasks, including motion editing, in-betweening, denoising, and avoiding obstacles, by only changing the objective function during test time optimization. The model is never trained to solve any of these tasks.
+          <br>
+          </p>
 
+          <p>
+            <b> Highlights: </b> DNO is a <b>simple, versatile, and effective</b> method that can be used for many tasks.
+          </p>          
           <figure  class="content has-text-centered">
             <img src="./static/images/overview.jpg"
                    class="column is-10 is-offset-0 has-text-centered"
@@ -640,7 +646,7 @@
     <pre><code>@inproceedings{karunratanakul2023dno,
   title={Optimizing Diffusion Noise Can Serve As Universal Motion Priors},
   author={Karunratanakul, Korrawe and Preechakul, Konpat and Aksan, Emre and Beeler, Thabo and Suwajanakorn, Supasorn and Tang, Siyu},
-  booktitle={arxiv},
+  booktitle={arxiv:2312.11994},
   year={2023}
 }</code></pre>
   </div>
